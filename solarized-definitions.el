@@ -539,6 +539,16 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
              ;;flyspell
              (flyspell-incorrect ((t (,@fg-red))))
              (flyspell-duplicate ((t (,@fg-yellow))))
+             ;; company-mode
+             (company-tooltip ((t (,@fg-base00 ,@bg-base02))))
+             (company-tooltip-selection ((t (,@fg-yellow ,@bg-base02))))
+             (company-tooltip-mouse ((t (,@fg-yellow ,@bg-base02))))
+             (company-tooltip-common ((t (,@fg-yellow ,@bg-base02))))
+             (company-tooltip-common-selection ((t (,@fg-yellow ,@bg-base02))))
+             (company-scrollbar-fg ((t (,@fg-base02 ,@bg-base0))))
+             (company-scrollbar-bg ((t (,@fg-cyan ,@bg-base02))))
+             (company-preview ((t (,@bg-green))))
+             (company-preview-common ((t (,@bg-base02))))
 	     ;;ansi-term
 	     (term-color-black ((t ( ,@fg-base02))))
 	     (term-color-red ((t ( ,@fg-red))))
