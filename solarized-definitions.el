@@ -540,7 +540,17 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
            (term-color-blue ((t ( ,@fg-blue))))
            (term-color-magenta ((t ( ,@fg-magenta))))
            (term-color-cyan ((t ( ,@fg-cyan))))
-           (term-color-white ((t ( ,@fg-base00)))))
+           (term-color-white ((t ( ,@fg-base00))))
+           ;; company-mode
+           (company-tooltip ((t (,@fg-base00 ,@bg-base02))))
+           (company-tooltip-selection ((t (,@fg-base1 ,@bg-base02))))
+           (company-tooltip-mouse ((t (,@fg-base1 ,@bg-base02))))
+           (company-tooltip-common ((t (,@fg-base1 ,@bg-base02))))
+           (company-tooltip-common-selection ((t (,@fg-base1 ,@bg-base02))))
+           (company-scrollbar-fg ((t (,@fg-base02 ,@bg-base0))))
+           (company-scrollbar-bg ((t (,@fg-cyan ,@bg-base02))))
+           (company-preview ((t (,@bg-green))))
+           (company-preview-common ((t (,@bg-base02)))))
 
           ((foreground-color . ,(when (<= 16 (display-color-cells)) base0))
            (background-color . ,back)
