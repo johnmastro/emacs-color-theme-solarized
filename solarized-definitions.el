@@ -130,7 +130,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
                                            light)))
     new-fontspec))
 
-(defun create-face-spec (name facespec)
+(defun solarized-create-face-spec (name facespec)
   `(,name ((((background dark) (type graphic))
             ,(solarized-face-for-index facespec
                                        (cond (solarized-degrade     3)
@@ -157,6 +157,9 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
             ,(solarized-face-for-index facespec 4 t))
            (((background light) (type tty) (min-colors   8))
             ,(solarized-face-for-index facespec 5 t)))))
+
+;; XXX: What's the right thing to put for WHEN?
+(define-obsolete-function-alias 'create-face-spec 'solarized-create-face-spec "201706")
 
 (defun solarized-color-definitions ()
   (let ((bold        (if solarized-bold 'bold        'unspecified))
@@ -227,7 +230,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
           (fmt-revbbu `(:weight ,bright-bold         :underline ,underline :inverse-video t)))
       (eval-after-load 'ansi-color
         '(setf ansi-color-names-vector [,base02 ,red ,green ,yellow ,blue ,magenta ,cyan ,base00]))
-      (mapcar (lambda (face) (apply 'create-face-spec face))
+      (mapcar (lambda (face) (apply 'solarized-create-face-spec face))
               `(;; basic
                 (default (,@fg-base0 ,@bg-back))   ; Normal
                 (cursor (,@fg-base03 ,@bg-base0))  ; Cursor
