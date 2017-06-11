@@ -246,8 +246,17 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
           (fmt-revb   `(:weight ,bold                                      :inverse-video t))
           (fmt-revbb  `(:weight ,bright-bold                               :inverse-video t))
           (fmt-revbbu `(:weight ,bright-bold         :underline ,underline :inverse-video t)))
-      (eval-after-load 'ansi-color
-        '(setf ansi-color-names-vector [,base02 ,red ,green ,yellow ,blue ,magenta ,cyan ,base00]))
+      (let ((base02  (solarized-get-color 'base02))
+            (red     (solarized-get-color 'red))
+            (green   (solarized-get-color 'green))
+            (yellow  (solarized-get-color 'yellow))
+            (blue    (solarized-get-color 'blue))
+            (magenta (solarized-get-color 'magenta))
+            (cyan    (solarized-get-color 'cyan))
+            (base00  (solarized-get-color 'base00)))
+        (eval-after-load 'ansi-color
+          `(ansi-color-map-update 'ansi-color-names-vector
+                                  [,base02 ,red ,green ,yellow ,blue ,magenta ,cyan ,base00])))
       (mapcar (lambda (face) (apply #'solarized-create-face-spec face))
               `(;; basic
                 (default (,@fg-base0 ,@bg-back))   ; Normal
