@@ -90,43 +90,54 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
    column is a different set, one of which will be chosen based on term
    capabilities, etc.")
 
-(defun solarized-get-color (name index &optional light)
-  (cond ((eq solarized-contrast 'high)
-         (setf name
-               (cl-case name
-                 (base01 'base00)
-                 (base00 'base0)
-                 (base0 'base1)
-                 (base1 'base2)
-                 (base2 'base3)
-                 (oterwise name))))
-        ((and (eq solarized-contrast 'low)
-              (eq name 'back))
-         (setf name 'base02)))
-  ;; NOTE: We try to turn an 8-color term into a 10-color term by not
-  ;;       using default background and foreground colors, expecting the
-  ;;       user to have the right colors set for them.
-  (when (and (= index 5)
-             (or (and (eq property :background)
-                      (eq name 'back))
-                 (and (eq property :foreground)
-                      (member name '(base0 base1)))))
-    (setf name nil))
-  (when (eq name 'back)
-    (setf name 'base03))
-  (when light
-    (setf name
-          (cl-case name
-            (base03 'base3)
-            (base02 'base2)
-            (base01 'base1)
-            (base00 'base0)
-            (base0 'base00)
-            (base1 'base01)
-            (base2 'base02)
-            (base3 'base03)
-            (otherwise name))))
-  (nth index (assoc name solarized-colors)))
+(defun solarized-get-color (name &optional index light)
+  (let ((index (or index
+                   (and (display-graphic-p)
+                        (or (and solarized-degrade 3)
+                            (and solarized-broken-srgb 2)
+                            1))
+                   (and (= solarized-termcolors 16)
+                        4)
+                   (let ((colors-defined (length (defined-colors))))
+                     (or (and (>= colors-defined 256) 3)
+                         (and (>= colors-defined 16) 4)
+                         5)))))
+    (cond ((eq solarized-contrast 'high)
+           (setf name
+                 (cl-case name
+                   (base01 'base00)
+                   (base00 'base0)
+                   (base0 'base1)
+                   (base1 'base2)
+                   (base2 'base3)
+                   (oterwise name))))
+          ((and (eq solarized-contrast 'low)
+                (eq name 'back))
+           (setf name 'base02)))
+    ;; NOTE: We try to turn an 8-color term into a 10-color term by not
+    ;;       using default background and foreground colors, expecting the
+    ;;       user to have the right colors set for them.
+    (when (and (= index 5)
+               (or (and (eq property :background)
+                        (eq name 'back))
+                   (and (eq property :foreground)
+                        (member name '(base0 base1)))))
+      (setf name nil))
+    (when (eq name 'back)
+      (setf name 'base03))
+    (when light
+      (setf name
+            (cl-case name
+              (base03 'base3)
+              (base02 'base2)
+              (base01 'base1)
+              (base00 'base0)
+              (base0 'base00)
+              (base1 'base01)
+              (base2 'base02)
+              (base3 'base03)
+              (otherwise name))))
+    (nth index (assoc name solarized-colors))))
 
 (defun solarized-face-for-index (facespec index &optional light)
   "Creates a face from facespec where the colors use the names from
