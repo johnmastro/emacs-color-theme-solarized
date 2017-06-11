@@ -1,8 +1,9 @@
+;;; solarized-definitions.el -*- lexical-binding: t -*-
+
 (eval-when-compile
   (unless (require 'cl-lib nil t)
     (require 'cl)
-    (defalias 'cl-case 'case))
-  )
+    (defalias 'cl-case 'case)))
 
 (defconst solarized-description
   "Color theme by Ethan Schoonover, created 2011-03-24.
