@@ -97,6 +97,18 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
     (dolist (property '(:foreground :background :color))
       (let ((color-name (plist-get new-fontspec property)))
         (when color-name
+          (cond ((eq solarized-contrast 'high)
+                 (setf color-name
+                       (cl-case color-name
+                         (base01 'base00)
+                         (base00 'base0)
+                         (base0 'base1)
+                         (base1 'base2)
+                         (base2 'base3)
+                         (oterwise color-name))))
+                ((and (eq solarized-contrast 'low)
+                      (eq color-name 'back))
+                 (setf color-name 'base02)))
           ;; NOTE: We try to turn an 8-color term into a 10-color term by not
           ;;       using default background and foreground colors, expecting the
           ;;       user to have the right colors set for them.
@@ -165,15 +177,8 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
   (let ((bold        (if solarized-bold 'bold        'unspecified))
         (bright-bold (if solarized-bold 'unspecified 'bold))
         (underline   (if solarized-underline t 'unspecified))
-        (opt-under   'unspecified)
+        (opt-under   (if (eq solarized-contrast 'low) t 'unspecified))
         (italic      (if solarized-italic 'italic 'unspecified)))
-    (cond ((eq 'high solarized-contrast)
-           (let ((orig-base3 base3))
-             (rotatef base01 base00 base0 base1 base2 base3)
-             (setf base3 orig-base3)))
-          ((eq 'low solarized-contrast)
-           (setf back      base02
-                 opt-under t)))
     (let ((bg-back   '(:background back))
           (bg-base03 '(:background base03))
           (bg-base02 '(:background base02))
