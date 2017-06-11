@@ -230,7 +230,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
           (fmt-revbbu `(:weight ,bright-bold         :underline ,underline :inverse-video t)))
       (eval-after-load 'ansi-color
         '(setf ansi-color-names-vector [,base02 ,red ,green ,yellow ,blue ,magenta ,cyan ,base00]))
-      (mapcar (lambda (face) (apply 'solarized-create-face-spec face))
+      (mapcar (lambda (face) (apply #'solarized-create-face-spec face))
               `(;; basic
                 (default (,@fg-base0 ,@bg-back))   ; Normal
                 (cursor (,@fg-base03 ,@bg-base0))  ; Cursor
@@ -791,7 +791,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
 (defmacro create-solarized-theme (name description color-definitions)
   `(progn
      (deftheme ,name ,description)
-     (apply 'custom-theme-set-faces
+     (apply #'custom-theme-set-faces
             ',name ,color-definitions)
      (provide-theme ',name)))
 
