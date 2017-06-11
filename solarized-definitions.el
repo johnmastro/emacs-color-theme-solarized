@@ -90,51 +90,53 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
    column is a different set, one of which will be chosen based on term
    capabilities, etc.")
 
+(defun solarized-get-color (name index &optional light)
+  (cond ((eq solarized-contrast 'high)
+         (setf name
+               (cl-case name
+                 (base01 'base00)
+                 (base00 'base0)
+                 (base0 'base1)
+                 (base1 'base2)
+                 (base2 'base3)
+                 (oterwise name))))
+        ((and (eq solarized-contrast 'low)
+              (eq name 'back))
+         (setf name 'base02)))
+  ;; NOTE: We try to turn an 8-color term into a 10-color term by not
+  ;;       using default background and foreground colors, expecting the
+  ;;       user to have the right colors set for them.
+  (when (and (= index 5)
+             (or (and (eq property :background)
+                      (eq name 'back))
+                 (and (eq property :foreground)
+                      (member name '(base0 base1)))))
+    (setf name nil))
+  (when (eq name 'back)
+    (setf name 'base03))
+  (when light
+    (setf name
+          (cl-case name
+            (base03 'base3)
+            (base02 'base2)
+            (base01 'base1)
+            (base00 'base0)
+            (base0 'base00)
+            (base1 'base01)
+            (base2 'base02)
+            (base3 'base03)
+            (otherwise name))))
+  (nth index (assoc name solarized-colors)))
+
 (defun solarized-face-for-index (facespec index &optional light)
   "Creates a face from facespec where the colors use the names from
   `solarized-colors`."
   (let ((new-fontspec (copy-sequence facespec)))
     (dolist (property '(:foreground :background :color))
-      (let ((color-name (plist-get new-fontspec property)))
-        (when color-name
-          (cond ((eq solarized-contrast 'high)
-                 (setf color-name
-                       (cl-case color-name
-                         (base01 'base00)
-                         (base00 'base0)
-                         (base0 'base1)
-                         (base1 'base2)
-                         (base2 'base3)
-                         (oterwise color-name))))
-                ((and (eq solarized-contrast 'low)
-                      (eq color-name 'back))
-                 (setf color-name 'base02)))
-          ;; NOTE: We try to turn an 8-color term into a 10-color term by not
-          ;;       using default background and foreground colors, expecting the
-          ;;       user to have the right colors set for them.
-          (when (and (= index 5)
-                     (or (and (eq property :background)
-                              (eq color-name 'back))
-                         (and (eq property :foreground)
-                              (member color-name '(base0 base1)))))
-            (setf color-name nil))
-          (when (eq color-name 'back)
-            (setf color-name 'base03))
-          (when light
-            (setf color-name
-                  (cl-case color-name
-                    (base03 'base3)
-                    (base02 'base2)
-                    (base01 'base1)
-                    (base00 'base0)
-                    (base0 'base00)
-                    (base1 'base01)
-                    (base2 'base02)
-                    (base3 'base03)
-                    (otherwise color-name))))
-          (plist-put new-fontspec
-                     property
-                     (nth index (assoc color-name solarized-colors))))))
+      (let* ((name (plist-get new-fontspec property))
+             (color (and name (solarized-get-color name index light))))
+        (when color
+          (plist-put new-fontspec property color))))
     (when (plist-get new-fontspec :box)
       (plist-put new-fontspec
                  :box
