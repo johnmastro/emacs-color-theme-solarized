@@ -110,7 +110,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
                    (base0 'base1)
                    (base1 'base2)
                    (base2 'base3)
-                   (oterwise name))))
+                   (otherwise name))))
           ((and (eq solarized-contrast 'low)
                 (eq name 'back))
            (setf name 'base02)))
