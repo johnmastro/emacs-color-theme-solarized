@@ -90,7 +90,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
    column is a different set, one of which will be chosen based on term
    capabilities, etc.")
 
-(defun solarized-get-color (name &optional index light)
+(defun solarized-get-color (name &optional property index light)
   (let ((index (or index
                    (and (display-graphic-p)
                         (or (and solarized-degrade 3)
@@ -145,9 +145,8 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
   (let ((new-fontspec (copy-sequence facespec)))
     (dolist (property '(:foreground :background :color))
       (let* ((name (plist-get new-fontspec property))
-             (color (and name (solarized-get-color name index light))))
-        (when color
-          (plist-put new-fontspec property color))))
+             (color (and name (solarized-get-color name property index light))))
+        (plist-put new-fontspec property color)))
     (when (plist-get new-fontspec :box)
       (plist-put new-fontspec
                  :box
