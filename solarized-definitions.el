@@ -146,7 +146,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
     (dolist (property '(:foreground :background :color))
       (let* ((name (plist-get new-fontspec property))
              (color (and name (solarized-get-color name property index light))))
-        (plist-put new-fontspec property color)))
+        (when name (plist-put new-fontspec property color))))
     (when (plist-get new-fontspec :box)
       (plist-put new-fontspec
                  :box
