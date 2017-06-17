@@ -556,7 +556,7 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
                 (gnus-group-news-low (,@fmt-bold ,@fg-violet))
                 (gnus-group-news-low-empty (,@fg-violet))
                 (gnus-emphasis-highlight-words ; highlight
-                 (,@fmt-none ,fg-yellow))
+                 (,@fmt-none ,@fg-yellow))
                 (gnus-header-content (,@fmt-none ,@fg-base01)) ; hdrdefault
                 (gnus-header-from (,@fmt-none ,@fg-base00)) ; header ^From
                 (gnus-header-name (,@fmt-none ,@fg-base01)) ; hdrdefault
@@ -684,9 +684,9 @@ the \"Gen RGB\" column in solarized-definitions.el to improve them further."
                 (message-header-to (,@fmt-bold ,@fg-base1))
                 ;; minimap
                 (minimap-active-region-background (,@bg-base02))
-                (minimap-semantic-function-face (,bg-base3))
-                (minimap-semantic-type-face (,bg-base3))
-                (minimap-semantic-variable-face (,bg-base3))
+                (minimap-semantic-function-face (,@bg-base3))
+                (minimap-semantic-type-face (,@bg-base3))
+                (minimap-semantic-variable-face (,@bg-base3))
                 ;; parenface
                 (parenface-bracket-face (:inherit shadow))
                 (parenface-curly-face (:inherit shadow))
